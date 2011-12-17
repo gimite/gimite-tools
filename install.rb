@@ -13,6 +13,7 @@ dest_dir = ARGV.empty? ? ENV["HOME"] + "/bin" : ARGV[0]
 fu.mkdir_p(dest_dir)
 for file_name in Dir["*.rb"]
   next if file_name == "install.rb"
-  next if File.exist?("#{dest_dir}/#{file_name}")
-  fu.ln_s(File.expand_path(file_name), "#{dest_dir}/#{file_name}")
+  dest_path = "%s/%s" % [dest_dir, File.basename(file_name, ".*")]
+  next if File.exist?(dest_path)
+  fu.ln_s(File.expand_path(file_name), dest_path)
 end
